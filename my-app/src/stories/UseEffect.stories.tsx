@@ -46,6 +46,7 @@ export const SetTimeoutExample = () => {
             console.log("setTimeout")
             document.title = counter.toString();
         }, 1000)
+
     }, [])
 
 
@@ -106,5 +107,63 @@ export const SetTimeExample = () => {
 
     return <>
         Hello, counter: {stringTime}
+    </>
+}
+
+export const ResetuseEffectExample = () => {
+
+    const [counter, setCounter] = useState<number>(1)
+    console.log("Component rendered");
+    useEffect(() => {
+        console.log("Effect occurred");
+        return () => {
+            console.log("Reset effect" + counter);
+        }
+    }, [])
+    return <>
+        Hello, counter: {counter}
+        <button onClick={() => {
+            setCounter(counter + 1)
+        }}>+
+        </button>
+    </>
+}
+export const KeysTrackerExample = () => {
+
+    const [text, setText] = useState<string>('')
+
+    console.log("Component rendered with" + text);
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) => {
+            console.log(e.key)
+            setText((state) => state + e.key)
+        }
+        window.addEventListener('keypress', handler)
+
+        return () => {
+            window.addEventListener('keypress', handler);
+        }
+
+    }, [])
+    return <>
+        Typed text: {text}
+    </>
+}
+export const SetTimeOutExample = () => {
+
+    const [text, setText] = useState<string>('')
+
+    console.log("Component rendered with" + text);
+    useEffect(() => {
+        const timeoutId = setTimeout (() => {
+           setText('3 seconds passed')
+       }, 3000)
+        return () => {
+            clearTimeout(timeoutId)
+        }
+
+    }, [text])
+    return <>
+        Typed text: {text}
     </>
 }
